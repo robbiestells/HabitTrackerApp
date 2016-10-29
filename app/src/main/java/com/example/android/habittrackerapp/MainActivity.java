@@ -22,9 +22,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mDbHelper = new HabitDbHelper(this);
+        readData();
     }
 
-    private void readData() {
+    //returns number of rows in database
+    private int readData() {
         //instantiate SQLiteOpenHelper
         HabitDbHelper mDbHelper = new HabitDbHelper(this);
 
@@ -55,11 +57,13 @@ public class MainActivity extends AppCompatActivity {
                 int currentTime = cursor.getInt(timeColumnIndex);
 
                 //send all to display (no UI required in project
+                return cursor.getCount();
             }
         } finally {
             // Close the cursor
             cursor.close();
         }
+        return 0;
     }
     private void insertHabit(){
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
