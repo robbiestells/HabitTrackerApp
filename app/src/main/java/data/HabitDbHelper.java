@@ -23,17 +23,17 @@ public class HabitDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
+        //creates habits table with the ID, name, date and time columns
         String SQL_CREATE_HABITS_TABLE = "CREATE TABLE " + HabitEntry.TABLE_NAME + " ("
                 + HabitEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + HabitEntry.COLUMN_HABIT_NAME + " TEXT NOT NULL, "
                 + HabitEntry.COLUMN_HABIT_DATE + " TEXT, "
-                + HabitEntry.COLUMN_HABIT_TIME + " INTEGER NOT NULL, ";
+                + HabitEntry.COLUMN_HABIT_TIME + " INTEGER NOT NULL DEFAULT 0);";
 
         db.execSQL(SQL_CREATE_HABITS_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-
     }
 }

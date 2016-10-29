@@ -13,8 +13,14 @@ public final class HabitContract {
         public static final String TABLE_NAME="habits";
 
         public static final String _ID=BaseColumns._ID;
+
+        //name of the habit, ie Working Out
         public static final String COLUMN_HABIT_NAME="name";
+
+        //date of the entry, ie January 1, 2017
         public static final String COLUMN_HABIT_DATE="date";
+
+        //time in minutes, ie 30 minutes
         public static final String COLUMN_HABIT_TIME="time";
     }
 }

@@ -24,15 +24,14 @@ public class MainActivity extends AppCompatActivity {
         mDbHelper = new HabitDbHelper(this);
     }
 
-    private void displayDatabaseInfo() {
-
+    private void readData() {
+        //instantiate SQLiteOpenHelper
         HabitDbHelper mDbHelper = new HabitDbHelper(this);
 
         // Create and/or open a database to read from it
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        // Perform this raw SQL query "SELECT * FROM pets"
-        // to get a Cursor that contains all rows from the pets table.
+        // Perform SQL query
         String[] projection = {
                 HabitEntry._ID,
                 HabitEntry.COLUMN_HABIT_TIME,
@@ -40,44 +39,39 @@ public class MainActivity extends AppCompatActivity {
                 HabitEntry.COLUMN_HABIT_NAME
         };
 
-
+        //Create cursor object
         Cursor cursor = db.query(HabitEntry.TABLE_NAME, projection, null, null, null, null, null);
         try {
-            // Display the number of rows in the Cursor (which reflects the number of rows in the
-            // pets table in the database).
-            TextView displayView = (TextView) findViewById(R.id.text_view_pet);
-            displayView.setText("Number of rows in pets database table: " + cursor.getCount());
-
-            int idColumnIndex = cursor.getColumnIndex(PetEntry.I_D);
-            int nameColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_NAME);
-            int breedColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_BREED);
-            int weightColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_WEIGHT);
-            int genderColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_GENDER);
+            //find all columns
+            int idColumnIndex = cursor.getColumnIndex(HabitEntry._ID);
+            int nameColumnIndex = cursor.getColumnIndex(HabitEntry.COLUMN_HABIT_NAME);
+            int dateColumnIndex = cursor.getColumnIndex(HabitEntry.COLUMN_HABIT_DATE);
+            int timeColumnIndex = cursor.getColumnIndex(HabitEntry.COLUMN_HABIT_TIME);
 
             while (cursor.moveToNext()){
                 int currentID = cursor.getInt(idColumnIndex);
                 String currentName = cursor.getString(nameColumnIndex);
-                String currentBreed = cursor.getString(breedColumnIndex);
-                int currentGender = cursor.getInt(genderColumnIndex);
-                int currentWeight = cursor.getInt(weightColumnIndex);
-                displayView.append("\n" + currentID + "-" + currentName + "-" + currentBreed + "-" + currentGender + "-" + currentWeight);
+                String currentDate = cursor.getString(dateColumnIndex);
+                int currentTime = cursor.getInt(timeColumnIndex);
+
+                //send all to display (no UI required in project
             }
         } finally {
-            // Always close the cursor when you're done reading from it. This releases all its
-            // resources and makes it invalid.
+            // Close the cursor
             cursor.close();
         }
     }
     private void insertHabit(){
-//        SQLiteDatabase db = mDBHelper.getWritableDatabase();
-//
-//        ContentValues values = new ContentValues();
-//        values.put(PetEntry.COLUMN_PET_NAME, "Toto");
-//        values.put(PetEntry.COLUMN_PET_BREED, "Terrier");
-//        values.put(PetEntry.COLUMN_PET_GENDER, PetEntry.GENDER_MALE);
-//        values.put(PetEntry.COLUMN_PET_WEIGHT, 7);
-//
-//        long newRowId = db.insert(PetEntry.TABLE_NAME, null, values);
-//        Log.v("CatalogActivity", "New row ID" + newRowId);
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        //get values (inserted dummy data for now, but would hook this up to TextEdit fields in the app
+        ContentValues values = new ContentValues();
+        values.put(HabitEntry.COLUMN_HABIT_NAME, "Worked out");
+        values.put(HabitEntry.COLUMN_HABIT_DATE, "October 29, 2016");
+        values.put(HabitEntry.COLUMN_HABIT_TIME, 30);
+
+        //insert a new entry with the data above
+        long newRowId = db.insert(HabitEntry.TABLE_NAME, null, values);
+        Log.v("Insert Habit", "New row ID: " + newRowId);
     }
 }
